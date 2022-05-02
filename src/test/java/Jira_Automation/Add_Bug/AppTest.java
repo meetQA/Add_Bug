@@ -26,17 +26,35 @@ public class AppTest {
     SessionFilter session=new SessionFilter();
     String response=given().relaxedHTTPSValidation().header("Content-Type","application/json").body("{    \"username\": \"meet.g\",    \"password\": \"Nehmi@1210\"}").log().all().filter(session).when().post("/rest/auth/1/session").then().log().all().extract().response().asString();
     //Add Bug
+    System.out.println(excelUtils.getCellData(3,1));
+   System.out.println(excelUtils.getRowCountInSheet());
+   int j;
+   for( j=2;j<excelUtils.getRowCountInSheet();j=j+2)
+   {
+	   if(excelUtils.getCellData(j,1).equals(""))
+	   {
+		   System.out.println(j);
+		   break;
+	   }  
+
+   }
+   for(int i=2;i<j;i=i+2)
+   {
+	   
+    String summary = excelUtils.getCellData(i,1).replace("\"", "'");
+    String description = excelUtils.getCellData(i,2).replace("\"", "'").replace("\n", " ");
+    System.out.println(description);
     String response1=given().relaxedHTTPSValidation().header("Content-Type","application/json").body("{\r\n"
     		+ "    \"fields\": {\r\n"
     		+ "        \"project\": {\r\n"
     		+ "            \"key\": \"QAT\"\r\n"
     		+ "        },\r\n"
-    		+ "        \"summary\":\""+excelUtils.getCellData(2,1)+"\",\r\n"
-    		+ "        \"description\" : \""+excelUtils.getCellData(2,2)+"\" ,\r\n"
+    		+ "        \"summary\":\""+summary+"\",\r\n"
+    		+ "        \"description\" :\"" +description+"\",\r\n"
     		+ "        \"components\" : [ { \"name\": \""+Constants.Component+"\"}  ],\r\n"
     		+ "        \"priority\": {\r\n"
     		+ "\r\n"
-    		+ "            \"name\": \""+excelUtils.getCellData(2,5)+"\"\r\n"
+    		+ "            \"name\": \""+excelUtils.getCellData(i,5)+"\"\r\n"
      		+ "        },\r\n"
      		+"\"assignee\": {\r\n"
      		+ "\"name\": \""+Constants.Assignee+"\"\r\n"
@@ -57,7 +75,7 @@ public class AppTest {
     System.out.println(commentId2);
     
   //Add Attachment
-     String attachment = excelUtils.getCellData(2,4);
+     String attachment = excelUtils.getCellData(i,4);
      System.out.println(commentId2);
      
     given().header("X-Atlassian-Token","no-check").filter(session).pathParam("key", commentId)
@@ -81,17 +99,20 @@ public class AppTest {
     		+ "                  \"outward\":\"blocks\"\r\n"
     		+ "               },\r\n"
     		+ "               \"outwardIssue\":{\r\n"
-    		+ "                  \"key\":\""+excelUtils.getCellData(2,7)+"\"\r\n"
+    		+ "                  \"key\":\""+excelUtils.getCellData(i,7)+"\"\r\n"
     		+ "               }\r\n"
     		+ "            }\r\n"
     		+ "         }\r\n"
     		+ "      ]\r\n"
     		+ "   }\r\n"
     		+ "}").log().all().filter(session).when().put("/rest/api/2/issue/"+commentId2).then().log().all().assertThat().statusCode(204).extract().response().asString();
+    
+    excelUtils.setCellValue(i,8,commentId,excelFilePath);
     }
+    }
+}	
+    
 	
 	
-	
-	
-}
+
 
