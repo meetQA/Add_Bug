@@ -24,7 +24,7 @@ public class AppTest {
     RestAssured.baseURI="http://jira.sgligis.com:8080";
     //Login Scenario
     SessionFilter session=new SessionFilter();
-    String response=given().relaxedHTTPSValidation().header("Content-Type","application/json").body("{    \"username\": \"meet.g\",    \"password\": \"Nehmi@1210\"}").log().all().filter(session).when().post("/rest/auth/1/session").then().log().all().extract().response().asString();
+    String response=given().relaxedHTTPSValidation().header("Content-Type","application/json").body("{    \"username\": \""+Constants.Username+"\",    \"password\": \""+Constants.Password+"\"}").log().all().filter(session).when().post("/rest/auth/1/session").then().log().all().extract().response().asString();
     //Add Bug
     System.out.println(excelUtils.getCellData(3,1));
    System.out.println(excelUtils.getRowCountInSheet());
