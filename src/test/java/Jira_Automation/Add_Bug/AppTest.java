@@ -38,7 +38,7 @@ public class AppTest {
 	   }  
 
    }
-   for(int i=2;i<j;i=i+2)
+   for(int i = Constants.Starting_Row-1;i<3;i=i+2)
    {
 	   
     String summary = excelUtils.getCellData(i,1).replace("\"", "'");
